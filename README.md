@@ -27,6 +27,9 @@ AgentWhipper 是一个受 OpenWhip 项目启发的，用于监督和干预 AI �
 - `whip start <agent> --mode watch`
   - 会启动并监控新 Agent 进程
   - 当前支持的启动目标：`codex` / `claude` / `hermes`
+- `whip watch --all`
+  - 会自动探测并持续显示所有可检测到的 agent 运行时
+  - 不依赖是否安装 `codex`
 - 输出 + CPU 双重状态判定
 - 内置预设 + YAML 自定义预设
 - `wait` 步骤支持：
@@ -106,6 +109,7 @@ cargo build --release
 
 ```bash
 whip start codex --mode watch
+whip watch --all
 whip stats
 whip whip --preset speedup
 whip preset list
@@ -151,6 +155,9 @@ The notes below reflect the **current codebase** and **recent observed behavior*
 - `whip start <agent> --mode watch`
   - launches and monitors a new agent process
   - currently supported startup targets: `codex`, `claude`, `hermes`
+- `whip watch --all`
+  - auto-detects and continuously reports all detectable agent runtimes
+  - does not require `codex` to be installed
 - output + CPU based state detection
 - built-in presets + YAML custom presets
 - `wait` preset step accepts:
@@ -230,6 +237,7 @@ Common commands:
 
 ```bash
 whip start codex --mode watch
+whip watch --all
 whip stats
 whip whip --preset speedup
 whip preset list

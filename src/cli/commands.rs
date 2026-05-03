@@ -197,7 +197,7 @@ pub fn handle_watch(all: bool, session_id: Option<&str>) -> Result<(), Box<dyn s
     }
 
     if all {
-        return Err("Watching all sessions is not implemented yet".into());
+        return handle_watch_all();
     } else if let Some(sid) = session_id {
         return Err(format!(
             "Live HUD for session {} is not implemented because sessions are not persisted yet",
@@ -207,6 +207,61 @@ pub fn handle_watch(all: bool, session_id: Option<&str>) -> Result<(), Box<dyn s
     }
 
     Ok(())
+}
+
+fn handle_watch_all() -> Result<(), Box<dyn std::error::Error>> {
+    let config = SupervisorConfig::load()?;
+    let shutdown = Arc::new(std::sync::atomic::AtomicBool::new(false));
+    signal_hook::flag::register(signal_hook::consts::SIGINT, Arc::clone(&shutdown)).ok();
+
+    println!("AgentWhipper all-runtime watch started");
+    println!("  Scope: all detectable agent runtimes");
+    println!("  Launch dependency: none");
+    println!();
+    println!("Monitoring active. Press Ctrl+C to stop.");
+
+    let mut last_snapshot = String::new();
+    while !shutdown.load(std::sync::atomic::Ordering::SeqCst) {
+        let runtimes = detect_running_runtimes(&config);
+        let snapshot = format_runtime_snapshot(&runtimes);
+
+        if snapshot != last_snapshot {
+            println!();
+            println!("[{}] {}", Local::now().format("%H:%M:%S"), snapshot);
+            last_snapshot = snapshot;
+        }
+
+        std::thread::sleep(Duration::from_secs(3));
+    }
+
+    println!();
+    println!("AgentWhipper all-runtime watch stopped.");
+    Ok(())
+}
+
+fn format_runtime_snapshot(runtimes: &[DetectedRuntime]) -> String {
+    if runtimes.is_empty() {
+        return "No detectable agent runtimes are currently running.".to_string();
+    }
+
+    runtimes
+        .iter()
+        .map(|runtime| {
+            let pids = if runtime.pids.is_empty() {
+                "bridge".to_string()
+            } else {
+                runtime
+                    .pids
+                    .iter()
+                    .map(u32::to_string)
+                    .collect::<Vec<_>>()
+                    .join(",")
+            };
+
+            format!("{} [{}]", runtime.display_name, pids)
+        })
+        .collect::<Vec<_>>()
+        .join("; ")
 }
 
 pub fn handle_inject(
