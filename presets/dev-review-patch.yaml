@@ -1,0 +1,17 @@
+name: "dev-review-patch"
+description: "开发→审核→修补循环"
+trigger_on:
+  - Stalled
+max_retries: 3
+steps:
+  - type: ctrl_c
+  - type: wait
+    duration: 0.5
+  - type: text
+    content: "/review"
+  - type: enter
+  - type: wait
+    duration: 2.0
+  - type: text
+    content: "审核以上代码，列出所有问题并逐一修复"
+  - type: enter

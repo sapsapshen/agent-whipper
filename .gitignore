@@ -1,0 +1,12 @@
+target/
+Cargo.lock
+*.log
+.env
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+presets/user_*.yaml
+sessions/

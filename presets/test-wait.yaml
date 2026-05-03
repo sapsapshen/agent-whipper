@@ -1,0 +1,7 @@
+name: "test-wait"
+description: "Test wait duration parsing"
+trigger_on: [STALLED]
+max_retries: 3
+steps:
+  - type: wait
+    duration: 1.5

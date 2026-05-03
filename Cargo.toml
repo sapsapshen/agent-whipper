@@ -1,0 +1,44 @@
+[package]
+name = "agentwhipper"
+version = "0.2.0"
+edition = "2021"
+description = "AI智能体监督与干预工具 - 实时监控+打断假死+注入加速命令+插件集成+自定义预设工作流"
+authors = ["AgentWhipper Team"]
+license = "MIT"
+
+[[bin]]
+name = "whip"
+path = "src/main.rs"
+
+[dependencies]
+clap = { version = "4", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+serde_yaml = "0.9"
+serde_json = "1"
+ratatui = "0.28"
+crossterm = { version = "0.28", features = ["event-stream"] }
+sysinfo = "0.31"
+portable-pty = "0.8"
+notify = { version = "6", features = ["macos_kqueue"] }
+tokio = { version = "1", features = ["full"] }
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1", features = ["v4"] }
+dirs = "5"
+log = "0.4"
+env_logger = "0.11"
+thiserror = "1"
+parking_lot = "0.12"
+signal-hook = "0.3"
+libc = "0.2"
+rand = "0.8"
+serde-value = "0.7"
+
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.52", features = ["Win32_System_Console", "Win32_System_Threading", "Win32_Foundation", "Win32_Storage_FileSystem"] }
+
+[dev-dependencies]
+tempfile = "3"
+
+[profile.release]
+opt-level = 2
+lto = true

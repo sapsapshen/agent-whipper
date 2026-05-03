@@ -1,0 +1,9 @@
+name: demo-test
+description: User-defined preset
+trigger_on:
+- STALLED
+max_retries: 3
+steps:
+- type: text
+  content:
+  - ''
