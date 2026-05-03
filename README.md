@@ -9,7 +9,7 @@
 
 ### 项目简介
 
-AgentWhipper 是一个用于监督和干预 AI 编码智能体的命令行工具，目标是：
+AgentWhipper 是一个受 OpenWhip 项目启发的，用于监督和干预 AI 编码智能体的命令行工具，目标是：
 
 - 启动并监控新的 Agent 进程
 - 基于输出活动与 CPU 变化识别运行中 / idle / stalled / zombie
